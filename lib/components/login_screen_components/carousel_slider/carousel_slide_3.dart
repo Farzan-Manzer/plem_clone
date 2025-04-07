@@ -71,10 +71,8 @@ class _CarouselSlide3State extends State<CarouselSlide3>
     return Stack(
       fit: StackFit.expand,
       children: [
-        // Falling assets
         ...List.generate(25, (i) => _buildFallingAsset(i)),
 
-        // Bottom text area
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(

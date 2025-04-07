@@ -1,4 +1,3 @@
-// screens/otp_screen.dart
 import 'package:flutter/material.dart';
 import '../components/custom_app_bar.dart';
 import '../components/custom_text_field.dart';
