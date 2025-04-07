@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GradientButton extends StatelessWidget {
   final String text;
@@ -36,7 +37,7 @@ class GradientButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
+            style: GoogleFonts.redRose(
               color: textColor,
               fontSize: fontSize,
               fontWeight: fontWeight,

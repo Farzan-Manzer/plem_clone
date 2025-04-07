@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PhoneInputField extends StatelessWidget {
   final TextEditingController? controller;
@@ -40,9 +41,9 @@ class PhoneInputField extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                   const SizedBox(width: 6),
-                  const Text(
+                  Text(
                     '+91',
-                    style: TextStyle(
+                    style: GoogleFonts.redRose(
                       color: Colors.white70,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -51,17 +52,13 @@ class PhoneInputField extends StatelessWidget {
                 ],
               ),
               const SizedBox(width: 12),
-              Container(
-                width: 1,
-                height: 40, // full height of the row
-                color: Colors.white24,
-              ),
+              Container(width: 1, height: 40, color: Colors.white24),
               const SizedBox(width: 12),
               Expanded(
                 child: TextField(
                   controller: controller,
                   keyboardType: TextInputType.phone,
-                  style: const TextStyle(
+                  style: GoogleFonts.redRose(
                     color: Colors.white,
                     fontSize: 18,
                     letterSpacing: 4,
@@ -70,8 +67,8 @@ class PhoneInputField extends StatelessWidget {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: hintText,
-                    hintStyle: const TextStyle(
-                      color: Color(0xFF33363E),
+                    hintStyle: GoogleFonts.redRose(
+                      color: const Color(0xFF33363E),
                       letterSpacing: 4,
                     ),
                   ),

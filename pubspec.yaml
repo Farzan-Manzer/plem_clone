@@ -63,11 +63,11 @@ flutter:
     - assets/flag.json
     - assets/transition.json
     - assets/flash.png
+    - assets/flash5.png
     - assets/indian_flag.png
     - assets/frame1.png
     - assets/frame2.png
     - assets/frame3.png
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

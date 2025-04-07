@@ -8,13 +8,8 @@ class CarouselSlide2 extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        // 🖼 Background image
-        Image.asset(
-          'assets/frame2.png', // 🔁 Replace with your real image path
-          fit: BoxFit.cover,
-        ),
+        Image.asset('assets/frame2.png', fit: BoxFit.cover),
 
-        // 📝 Text at the bottom
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(

@@ -13,15 +13,10 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // 🔼 Carousel section - extended
             SizedBox(
-              height:
-                  MediaQuery.of(context).size.height *
-                  0.65, // increased from 0.55
+              height: MediaQuery.of(context).size.height * 0.65,
               child: const HorizontalCarouselSlider(),
             ),
-
-            // 🔽 Login UI - fixed lower part
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
