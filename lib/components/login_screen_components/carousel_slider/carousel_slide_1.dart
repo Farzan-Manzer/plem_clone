@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'plem_carousel_bottom_text.dart';
 
 const double iconSize = 100;
 
@@ -30,7 +31,7 @@ class _CarouselSlide1State extends State<CarouselSlide1>
     'https://res.cloudinary.com/dmkkl6bcz/image/upload/v1743955946/plem/medicine_bottle_and_pills_1_xcarzf.png',
     'https://res.cloudinary.com/dmkkl6bcz/image/upload/v1743955946/plem/slice_of_pizza_with_mushrooms_1_f84kj0.png',
     'https://res.cloudinary.com/dmkkl6bcz/image/upload/v1743955945/plem/shopping_bags_1_nvlojf.png',
-    'https://res.cloudinary.com/dmkkl6bcz/image/upload/v1743955942/plem/diamond_1_xmldyg.png',
+    'https://res.cloudinary.com/dmkkl6bcz/image/upload/v1743955944/plem/furniture_1_dx4ard.png',
     'https://res.cloudinary.com/dmkkl6bcz/image/upload/v1743955945/plem/hoodie_1_tv48gc.png',
     'https://res.cloudinary.com/dmkkl6bcz/image/upload/v1743955946/plem/slice_of_pizza_with_mushrooms_1_f84kj0.png',
     'https://res.cloudinary.com/dmkkl6bcz/image/upload/v1743955944/plem/furniture_1_dx4ard.png',
@@ -88,133 +89,79 @@ class _CarouselSlide1State extends State<CarouselSlide1>
       },
     );
   }
-  // working but the thing is its only working for inner circle but not outer circle its not alowing that the outer cirle to overflow
-  // (i will ask aditya sir after)
-  // Widget _buildRingPath(double radius) {
-  //   return Positioned.fill(
-  //     child: Center(
-  //       child: Container(
-  //         width: radius * 2,
-  //         height: radius * 2,
-  //         decoration: BoxDecoration(
-  //           shape: BoxShape.circle,
-  //           border: Border.all(color: Colors.grey.shade800, width: 1),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+
+  Widget _buildRotatingRingPath(double radius, double speedMultiplier) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (_, __) {
+        final double rotation = _controller.value * 2 * pi * speedMultiplier;
+
+        return Transform.rotate(
+          angle: rotation,
+          child: Container(
+            width: radius * 2,
+            height: radius * 2,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.grey.shade800, width: 1),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final double innerRadius = MediaQuery.of(context).size.width * 0.35;
-    final double outerRadius = MediaQuery.of(context).size.width * 0.65;
+    final double innerRadius = MediaQuery.of(context).size.width * 0.30;
+    final double outerRadius = MediaQuery.of(context).size.width * 0.55;
 
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            _buildRotatingRing(
-              icons: outerIcons,
-              radius: outerRadius,
-              angleOffset: 0,
-              speedMultiplier: 1.5,
-            ),
-            _buildRotatingRing(
-              icons: innerIcons,
-              radius: innerRadius,
-              angleOffset: pi / 8,
-              speedMultiplier: 0.5,
-            ),
-            Image.asset(
-              'assets/flash5.png',
-              height: 120,
-              width: 220,
-              fit: BoxFit.scaleDown,
-            ),
-          ],
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Colors.black.withOpacity(0.85)],
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: OverflowBox(
+                    maxWidth: double.infinity,
+                    maxHeight: double.infinity,
+                    alignment: Alignment.center,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        _buildRotatingRingPath(outerRadius, 1.5),
+                        _buildRotatingRingPath(innerRadius, 0.5),
+                        _buildRotatingRing(
+                          icons: outerIcons,
+                          radius: outerRadius,
+                          angleOffset: 0,
+                          speedMultiplier: 1.5,
+                        ),
+                        _buildRotatingRing(
+                          icons: innerIcons,
+                          radius: innerRadius,
+                          angleOffset: pi / 8,
+                          speedMultiplier: 0.5,
+                        ),
+
+                        Image.asset(
+                          'assets/flash5.png',
+                          height: 120,
+                          width: 220,
+                          fit: BoxFit.scaleDown,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'earn upto ',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                      TextSpan(
-                        text: '500% PLEMs',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          foreground:
-                              Paint()
-                                ..shader = const LinearGradient(
-                                  colors: [
-                                    Color(0xFFFF512F),
-                                    Color(0xFFDD2476),
-                                  ],
-                                ).createShader(
-                                  const Rect.fromLTWH(0, 0, 200, 70),
-                                ),
-                        ),
-                      ),
-                      const TextSpan(
-                        text: ' on your spends',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 8),
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'and get bonus PLEMs on every visit\n',
-                        style: TextStyle(color: Colors.white70, fontSize: 14),
-                      ),
-                      TextSpan(
-                        text: 'ab har roz rewards kamao',
-                        style: TextStyle(
-                          fontSize: 14,
-                          foreground:
-                              Paint()
-                                ..shader = const LinearGradient(
-                                  colors: [
-                                    Color(0xFFFF512F),
-                                    Color(0xFFDD2476),
-                                  ],
-                                ).createShader(
-                                  const Rect.fromLTWH(0, 0, 200, 70),
-                                ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+
+              const PlemCarouselBottomText(),
+            ],
+          );
+        },
+      ),
     );
   }
 }

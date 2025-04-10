@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:plem_clone/components/BackgroundWrapper.dart';
 import 'dart:async';
-import '../components/gradient_background.dart';
 import 'login_screen.dart';
 import 'package:lottie/lottie.dart';
 
@@ -48,9 +48,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GradientBackground(
-        child: Stack(
+    return BackgroundWrapper(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Stack(
           children: [
             Center(
               child: Image.asset(

@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CarouselSlide3 extends StatefulWidget {
   const CarouselSlide3({super.key});
@@ -18,13 +19,27 @@ class _CarouselSlide3State extends State<CarouselSlide3>
     'https://res.cloudinary.com/dmkkl6bcz/image/upload/v1744003270/3dicons_osfssr.png',
   ];
 
+  late List<_DropData> _dropDataList;
+
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 8),
     )..repeat();
+
+    final random = Random();
+    _dropDataList = List.generate(120, (index) {
+      return _DropData(
+        startX: random.nextDouble(),
+        delay: random.nextDouble(),
+        rotation: random.nextDouble() * 2 * pi,
+        scale: 0.6 + random.nextDouble() * 1.6,
+        speedFactor: 0.5 + random.nextDouble() * 1.8,
+        assetUrl: assetUrls[random.nextInt(assetUrls.length)],
+      );
+    });
   }
 
   @override
@@ -33,32 +48,39 @@ class _CarouselSlide3State extends State<CarouselSlide3>
     super.dispose();
   }
 
-  Widget _buildFallingAsset(int index) {
-    final random = Random(index);
-    final double startX =
-        random.nextDouble() * MediaQuery.of(context).size.width;
-    final double delay = random.nextDouble();
-    final String asset = assetUrls[index % assetUrls.length];
-
+  Widget _buildFallingDrop(_DropData drop) {
     return AnimatedBuilder(
       animation: _controller,
       builder: (_, __) {
-        final double progress = (_controller.value + delay) % 1.0;
-        final double fallY = MediaQuery.of(context).size.height * progress;
-        final double bounceY = MediaQuery.of(context).size.height * 0.55;
-        final double y = fallY > bounceY ? bounceY : fallY;
+        final screenHeight = MediaQuery.of(context).size.height;
+        final screenWidth = MediaQuery.of(context).size.width;
+
+        final double progress =
+            (_controller.value * drop.speedFactor + drop.delay) % 1.0;
+        final double fallY = screenHeight * progress;
+        final double maxFall = screenHeight * 0.55 + 100; // lower barrier by 50
+
+        final double y = fallY > maxFall ? maxFall : fallY;
+        final double x = screenWidth * drop.startX;
 
         return Positioned(
-          top: y - 50,
-          left: startX,
-          child: Opacity(
-            opacity: 1 - progress,
-            child: Image.network(
-              asset,
-              width: 40,
-              height: 40,
-              errorBuilder:
-                  (_, __, ___) => const Icon(Icons.money, color: Colors.white),
+          top: y - 40,
+          left: x,
+          child: Transform.rotate(
+            angle: drop.rotation,
+            child: Transform.scale(
+              scale: drop.scale,
+              child: Opacity(
+                opacity: 1 - progress,
+                child: Image.network(
+                  drop.assetUrl,
+                  width: 40,
+                  height: 40,
+                  errorBuilder:
+                      (_, __, ___) =>
+                          const Icon(Icons.money, color: Colors.white),
+                ),
+              ),
             ),
           ),
         );
@@ -71,7 +93,7 @@ class _CarouselSlide3State extends State<CarouselSlide3>
     return Stack(
       fit: StackFit.expand,
       children: [
-        ...List.generate(25, (i) => _buildFallingAsset(i)),
+        ..._dropDataList.map(_buildFallingDrop).toList(),
 
         Align(
           alignment: Alignment.bottomCenter,
@@ -91,13 +113,16 @@ class _CarouselSlide3State extends State<CarouselSlide3>
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     children: [
-                      const TextSpan(
-                        text: 'it’s raining ',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      TextSpan(
+                        text: "it’s raining ",
+                        style: GoogleFonts.lexend(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
                       TextSpan(
                         text: 'PLEMs',
-                        style: TextStyle(
+                        style: GoogleFonts.lexend(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           foreground:
@@ -115,21 +140,20 @@ class _CarouselSlide3State extends State<CarouselSlide3>
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 8),
-
-                const Text(
+                Text(
                   'get joining bonus of 1,000 PLEMs worth ₹100!',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                  style: GoogleFonts.lexend(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  ),
                 ),
-
                 const SizedBox(height: 4),
-
                 Text(
-                  'ab kaisa intezaar, let’s PLEM’it yaar',
+                  "ab kaisa intezaar, let's PLEM'it yaar",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: GoogleFonts.lexend(
                     fontSize: 14,
                     foreground:
                         Paint()
@@ -145,4 +169,22 @@ class _CarouselSlide3State extends State<CarouselSlide3>
       ],
     );
   }
+}
+
+class _DropData {
+  final double startX;
+  final double delay;
+  final double rotation;
+  final double scale;
+  final double speedFactor;
+  final String assetUrl;
+
+  _DropData({
+    required this.startX,
+    required this.delay,
+    required this.rotation,
+    required this.scale,
+    required this.speedFactor,
+    required this.assetUrl,
+  });
 }

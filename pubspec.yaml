@@ -31,10 +31,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_animate: ^4.3.0
-  rive: ^0.11.5
   lottie: ^2.7.0
   carousel_slider: ^5.0.0
   google_fonts: ^6.1.0
+  cached_network_image: ^3.3.1
   get:
 
 
@@ -68,6 +68,7 @@ flutter:
     - assets/frame1.png
     - assets/frame2.png
     - assets/frame3.png
+    - assets/backgroung.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

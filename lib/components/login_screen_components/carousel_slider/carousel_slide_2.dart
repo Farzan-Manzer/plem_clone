@@ -1,14 +1,78 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class CarouselSlide2 extends StatelessWidget {
+class CarouselSlide2 extends StatefulWidget {
   const CarouselSlide2({super.key});
 
   @override
+  State<CarouselSlide2> createState() => _CarouselSlide2State();
+}
+
+class _CarouselSlide2State extends State<CarouselSlide2>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  final String brandImageUrl =
+      'https://res.cloudinary.com/dmkkl6bcz/image/upload/v1744262062/Flow_Design_Rows_idr821.png';
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 5),
+      vsync: this,
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height * 0.55;
+    final imageWidth = screenWidth * 2;
+
     return Stack(
-      fit: StackFit.expand,
       children: [
-        Image.asset('assets/frame2.png', fit: BoxFit.cover),
+        ClipRect(
+          child: SizedBox(
+            width: screenWidth,
+            height: screenHeight,
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (_, __) {
+                final offsetX = _controller.value * -screenWidth;
+
+                return OverflowBox(
+                  maxWidth: imageWidth * 1.5,
+                  maxHeight: imageWidth * 1.5,
+                  alignment: Alignment.center,
+                  child: Transform.rotate(
+                    angle: -pi / 6,
+                    child: Transform.translate(
+                      offset: Offset(offsetX, 0),
+                      child: Transform.scale(
+                        scale: 1.4,
+                        child: SizedBox(
+                          width: imageWidth,
+                          child: Image.network(
+                            brandImageUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
 
         Align(
           alignment: Alignment.bottomCenter,
@@ -28,13 +92,16 @@ class CarouselSlide2 extends StatelessWidget {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     children: [
-                      const TextSpan(
+                      TextSpan(
                         text: 'redeem ',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: GoogleFonts.lexend(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
                       TextSpan(
                         text: 'PLEMs',
-                        style: TextStyle(
+                        style: GoogleFonts.lexend(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           foreground:
@@ -49,13 +116,16 @@ class CarouselSlide2 extends StatelessWidget {
                                 ),
                         ),
                       ),
-                      const TextSpan(
+                      TextSpan(
                         text: ' for ',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: GoogleFonts.lexend(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
                       TextSpan(
                         text: 'faadu',
-                        style: TextStyle(
+                        style: GoogleFonts.lexend(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           foreground:
@@ -70,18 +140,24 @@ class CarouselSlide2 extends StatelessWidget {
                                 ),
                         ),
                       ),
-                      const TextSpan(
+                      TextSpan(
                         text: ' deals',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: GoogleFonts.lexend(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'on 250+ brands – big brands, bigger savings',
+                Text(
+                  'on 250+ brands - big brands, bigger savings',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                  style: GoogleFonts.lexend(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  ),
                 ),
               ],
             ),
